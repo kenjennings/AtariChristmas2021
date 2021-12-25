@@ -3,9 +3,13 @@ VC3 2021 Programming Challenge
 
 ---
 
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
+
 2021 Atari Christmas
 
 Vintage Christmas Challenge 2021 #VCCC2021
+
+---
 
 Built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
@@ -17,6 +21,8 @@ Abuse Atari's structured file format to load all data for display into memeory, 
 
 While we're here... Setup the display to immitate the number of lines on the C64.
  
+--- 
+
  ASSEMBLY RESULTS:
 FILE SIZE:         452 Bytes
 - EXE FILE OVERHEAD:  30 Bytes
@@ -25,5 +31,3 @@ FILE SIZE:         452 Bytes
 - (340 Bytes Screen memory)
 - (69 Bytes Display List)
 - EXECUTABLE CODE:     3 Bytes 
-
-[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
