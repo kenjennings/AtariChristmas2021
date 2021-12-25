@@ -18,10 +18,10 @@ Abuse Atari's structured file format to load all data for display into memeory, 
 While we're here... Setup the display to immitate the number of lines on the C64.
  
  ASSEMBLY RESULTS:
-- FILE SIZE:         452 Bytes
+FILE SIZE:         452 Bytes
 - EXE FILE OVERHEAD:  30 Bytes
 - NON-DISPLAY DATA:   10 Bytes
 - DISPLAY DATA:      409 Bytes
--                              340 Bytes Screen memory
--                               69 Bytes Display list
+- (340 Bytes Screen memory)
+- (69 Bytes Display List)
 - EXECUTABLE CODE:     3 Bytes 
