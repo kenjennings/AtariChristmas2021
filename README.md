@@ -26,8 +26,4 @@ FILE SIZE:         452 Bytes
 - (69 Bytes Display List)
 - EXECUTABLE CODE:     3 Bytes 
 
-[![DEMO](https://github.com/kenjennings/AtariChristmas2021/blob/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/master/README.md "Demo") 
-
-[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/master/README.md "Demo") 
-
-https://raw.githubusercontent.com/kenjennings/Random-Acts-Of-Asm/master/GTIA256.png
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
