@@ -31,6 +31,8 @@
 ;
 ; This nearly cuts the original Assembly results in half.
 ; 
+;*******************************************************************************
+;
 ; ORIGINAL ASSEMBLY RESULTS:
 ; FILE SIZE:         452 Bytes
 ; EXE FILE OVERHEAD:  30 Bytes
@@ -87,7 +89,7 @@ TREE_17	  .sb "        *****************  "       ; 25 (+2) (+5)
 TREE_23	  .sb "     ***********************    "  ; 32          
 ;                                               == 181 total bytes of screen memeory
 
-; Because screen data is "shared" between adjscanet lines, every 
+; Because screen data is "shared" between adjacent lines, every 
 ; instruction in the display list needs LMS to start reading at the 
 ; correct spot.   The difference is easily made up by the number of 
 ; bytes saved for screen memeory, not to mention that the lines of 
