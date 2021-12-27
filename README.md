@@ -20,7 +20,7 @@ FILE SIZE:         452 Bytes
 - (69 Bytes Display List)
 - EXECUTABLE CODE:     3 Bytes 
 
-Abuse Atari's structured file format to load all data for display into memory, update the necessary shadow registers. In the end, no actual code executes to create the display. The only code running is there to prevent returning to DOS immediately.
+Abuse Atari's structured file format to load all data for display directly into memory and update the necessary shadow registers.  In the end, no actual code executes to create the display. The only code running is a do-nothing loop to prevent returning to DOS immediately.
 
 While we're here... Setup the display to immitate the number of lines on the C64.
 
