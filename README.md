@@ -48,6 +48,29 @@ This nearly cuts the original Assembly results in half.
 
 ---
 
-More versions of mad abuse soon.
+2021 Atari Christmas Optimized Width Plus Prettification... 
+
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021opt32pretty.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
+
+PRETTIFICATION ASSEMBLY RESULTS:
+FILE SIZE:         340 Bytes
+- EXE FILE OVERHEAD:  38 Bytes
+- NON-DISPLAY DATA:   10 Bytes
+- DISPLAY DATA:      289 Bytes
+- (209 Bytes Screen Memory)
+- (48 Bytes Display List)
+- (32 Bytes Character Set)
+- EXECUTABLE CODE:     3 Bytes 
+
+Those default colors (modeled from the C64) are ugly, right?   So, let's make this look more like a Christmas Tree.  
+1) Use ANTIC Mode 4 for color text.
+2) Use colors more like a Christmas Tree
+3) Use a (partial) redefined character set to provide the new colored asterix for building the tree.
+
+Yes, this does make the demo a little bigger, but it is still smaller than the original demo by over 100 bytes.
+
+---
+
+Will there be more versions of mad abuse?
 
 --- 
