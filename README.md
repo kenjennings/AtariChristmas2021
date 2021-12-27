@@ -1,9 +1,11 @@
 # AtariChristmas2021
 **VC3 2021 Vintage Christmas Programming Challenge #VCCC2021**
 
-Built with MADS assembler from eclipse+WUDSN by Ken Jennings
+https://logiker.com/Vintage-Computing-Christmas-Challenge-2021?fbclid=IwAR0qiysYCVLMEjuKfM3jJBGuRMUOgWTrwhW59gOEJmwtkl_B4mfJ7-PDw5Y
 
-2021-12-25
+Unfortunately, I missed the contest this year.  But, decided to roll up something unconventional for the entertainment value.
+
+These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
 ---
 
