@@ -9,7 +9,7 @@ These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
 ---
 
-2021 Atari Christmas Original Version... 
+**2021 Atari Christmas Original Version...**
 
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
 
@@ -28,7 +28,7 @@ While we're here... Setup the display to immitate the number of lines on the C64
 
 ---
 
-2021 Atari Christmas Optimized For 32 Character Width... 
+**2021 Atari Christmas Optimized For 32 Character Width...**
 
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021opt32.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
 
@@ -50,7 +50,7 @@ This nearly cuts the original Assembly results in half.
 
 ---
 
-2021 Atari Christmas Optimized Width Plus Prettification... 
+**2021 Atari Christmas Optimized Width Plus Prettification...**
 
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021opt32pretty.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
 
