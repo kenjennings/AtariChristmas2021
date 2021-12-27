@@ -9,25 +9,44 @@
 ; in the results and decided to work on an unconventional 
 ; solution.   2021-12-25
 ;
-;*******************************************************************************
-;
-; Original Version.....
 ; This abuses Atari's structured file format to load all data for 
 ; display into memory, and update the necessary shadow registers.
 ; In the end, no actual code executes to create the display.
 ; The only code running is there to prevent returning to DOS 
 ; immediately.
 ;
-; While we're here... Setup the display to immitate the number
-; of lines on the C64.
+;*******************************************************************************
+;
+; Easy Optimization Version....
+; Since the point is to display the Christmas tree let's just 
+; service only enough data to make that possible.
+; 1) Make the Display List only produce what is necessary to 
+; display the lines of the tree.   There is no need to present 
+; any blank/empty text mode lines. 
+; 2) The tree at it's widest point is less than the 32 characters
+; for the narrow width screen, so use narrow width.
+; 3) Since each line begins and end with blank spaces then 
+; the blanks can overlap from line to line to produce the correct
+; number of leading/trailing blanks from "shared" data.
+;
+; This nearly cuts the original Assembly results in half.
 ; 
-; ASSEMBLY RESULTS:
+; ORIGINAL ASSEMBLY RESULTS:
 ; FILE SIZE:         452 Bytes
 ; EXE FILE OVERHEAD:  30 Bytes
 ; NON-DISPLAY DATA:   10 Bytes
 ; DISPLAY DATA:      409 Bytes
 ;                              340 Bytes Screen memory
 ;                               69 Bytes Display list
+; EXECUTABLE CODE:     3 Bytes 
+;
+; EASY OPTIMIZE 32 ASSEMBLY RESULTS:
+; FILE SIZE:         272 Bytes
+; EXE FILE OVERHEAD:  30 Bytes
+; NON-DISPLAY DATA:   10 Bytes
+; DISPLAY DATA:      229 Bytes
+;                              181 Bytes Screen memory
+;                               48 Bytes Display list
 ; EXECUTABLE CODE:     3 Bytes 
 ;*******************************************************************************
 
@@ -58,45 +77,40 @@
 
 	ORG $4000               ; Arbitrary
 
-SPACES_40 .sb "                    "                     ; Borrowing the next 20 spaces from the line that follows...          
-TREE_01	  .sb "                    *                   "
-TREE_03	  .sb "                   ***                  "            
-TREE_05	  .sb "                  *****                 "            
-TREE_07	  .sb "                 *******                "            
-TREE_11	  .sb "               ***********              "                    
-TREE_15	  .sb "             ***************            "            
-TREE_17	  .sb "            *****************           "            
-TREE_23	  .sb "         ***********************        "            
+TREE_01	  .sb "                *"                 ; 17      (+15)  ; Borrow trailing spaces from the line of data that follows.
+TREE_03	  .sb "               ***"                ; 18      (+14)
+TREE_05	  .sb "              *****"               ; 19      (+13)
+TREE_07	  .sb "             ******* "             ; 20 (+1) (+10)
+TREE_11	  .sb "           *********** "           ; 22 (+1) (+9)         
+TREE_15	  .sb "         ***************"          ; 24      (+8)
+TREE_17	  .sb "        *****************  "       ; 25 (+2) (+5)   
+TREE_23	  .sb "     ***********************    "  ; 32          
+;                                               == 181 total bytes of screen memeory
 
-DISPLAY_LIST
+; Because screen data is "shared" between adjscanet lines, every 
+; instruction in the display list needs LMS to start reading at the 
+; correct spot.   The difference is easily made up by the number of 
+; bytes saved for screen memeory, not to mention that the lines of 
+; blank spaces are also removed saving even more.
+
+DISPLAY_LIST                   ; Total 48 bytes
 	mDL_BLANK DL_BLANK_8
 	mDL_BLANK DL_BLANK_8
-	mDL_BLANK DL_BLANK_4         ; That was 20 blank lines to take care of overscan at the top of the screen.
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 1
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 2
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 3
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 4
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 5
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 6
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 7
-	mDL_LMS DL_TEXT_2,TREE_01    ; Line 8
-	mDL     DL_TEXT_2 ; TREE_03  ; Line 9 ; LMS is not always needed when the data of continuguous line is contiguous in memeory
-	mDL     DL_TEXT_2 ; TREE_05  ; Line 10
-	mDL     DL_TEXT_2 ; TREE_07  ; Line 11
-	mDL_LMS DL_TEXT_2,TREE_03    ; Line 12
-	mDL_LMS DL_TEXT_2,TREE_07    ; Line 13
-	mDL     DL_TEXT_2 ; TREE_11  ; Line 14
-	mDL     DL_TEXT_2 ; TREE_15  ; Line 15
-	mDL_LMS DL_TEXT_2,TREE_05    ; Line 16
-	mDL_LMS DL_TEXT_2,TREE_11    ; Line 17
-	mDL_LMS DL_TEXT_2,TREE_17    ; Line 18
-	mDL     DL_TEXT_2 ; TREE_23  ; Line 19
-	mDL_LMS DL_TEXT_2,TREE_03    ; Line 20
-	mDL_LMS DL_TEXT_2,TREE_03    ; Line 21
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 22
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 23
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 24
-	mDL_LMS DL_TEXT_2,SPACES_40  ; Line 25 ; Huh.  The Atari can display 200 scan lines.  How about that?
+	mDL_BLANK DL_BLANK_8       ; That was 24 blank lines to take care of overscan at the top of the screen.
+	mDL_LMS DL_TEXT_2,TREE_01  ; Line 1
+	mDL_LMS DL_TEXT_2,TREE_03  ; Line 2 
+	mDL_LMS DL_TEXT_2,TREE_05  ; Line 3
+	mDL_LMS DL_TEXT_2,TREE_07  ; Line 4
+	mDL_LMS DL_TEXT_2,TREE_03  ; Line 5
+	mDL_LMS DL_TEXT_2,TREE_07  ; Line 6
+	mDL_LMS DL_TEXT_2,TREE_11  ; Line 7
+	mDL_LMS DL_TEXT_2,TREE_15  ; Line 8
+	mDL_LMS DL_TEXT_2,TREE_05  ; Line 9
+	mDL_LMS DL_TEXT_2,TREE_11  ; Line 10
+	mDL_LMS DL_TEXT_2,TREE_17  ; Line 11
+	mDL_LMS DL_TEXT_2,TREE_23  ; Line 12
+	mDL_LMS DL_TEXT_2,TREE_03  ; Line 13
+	mDL_LMS DL_TEXT_2,TREE_03  ; Line 14
 	mDL_JVB DISPLAY_LIST
 
 ; ==========================================================================
@@ -109,7 +123,7 @@ DISPLAY_LIST
 	.word DISPLAY_LIST    ; DPOKE SDLSTL, DISPLAY_LIST
 
 	ORG SDMCTL
-	.byte ENABLE_DL_DMA|PLAYFIELD_WIDTH_NORMAL  ; POKE SDMCTL, Display On, Normal Width
+	.byte ENABLE_DL_DMA|PLAYFIELD_WIDTH_NARROW  ; POKE SDMCTL, Display On, Narrow Width
 
 	
 ; ==========================================================================
