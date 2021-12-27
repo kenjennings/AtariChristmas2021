@@ -52,6 +52,8 @@
 ; EXECUTABLE CODE:     3 Bytes 
 ;*******************************************************************************
 
+; O P T I M I Z E D    F O R    3 2   C H A R A C T E R    S C R E E N    W I D T H 
+
 ; ==========================================================================
 ; Atari System Includes (MADS assembler versions)
 ; https://github.com/kenjennings/Atari-Mads-Includes
