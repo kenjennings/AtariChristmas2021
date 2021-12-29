@@ -13,6 +13,18 @@ These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
 ---
 
+**VERSION SUMMARY**
+
+| **VERSION** | **FILE SIZE** | **CODE SIZE** |
+| ------- | ------- | ------- |
+| WorstCase | 1080 bytes | 3 bytes |
+| Original  | 452 bytes | 3 bytes |
+| 32 Width  | 272 bytes | 3 bytes |
+| Pretty    | 340 bytes | 3 bytes |
+| Computed  | 181 bytes | 31 bytes |
+
+---
+
 **2021 Atari Christmas Original Version...**
 
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
