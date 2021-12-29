@@ -28,6 +28,29 @@ While we're here... Setup the display to immitate the number of lines on the C64
 
 ---
 
+**2021 Atari Christmas Worst Case Version...**
+
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
+
+WORST CASE ASSEMBLY RESULTS:
+- FILE SIZE:         1080 Bytes
+- EXE FILE OVERHEAD:   34 Bytes
+- NON-DISPLAY DATA:    10 Bytes
+- DISPLAY DATA:      1033 Bytes
+- (1000 Bytes Screen memory)
+- (33 Bytes Display list)
+- EXECUTABLE CODE:     3 Bytes 
+
+The Original version contains some optimizations that are automatic, typical, trivial based on the way the Atari's ANTIC chip operates.  For example, sharing the same data as screen memeory for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.
+
+The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memeory Scan only needs to be setup once in the display list and then reading the subsequent data as screen memory is automatic.
+
+Because the screen data is nearly 1K, the display list following the screen would run over the 1K boundary limit for Display Lists.  Unlike the other versions of the demo using much less data for screen display, this version must move the  Display List to an aligned location that will prevent it from crossing over the 1K boundary.  This introduces an extra segment and more XEX file overhead not present in the other versions.
+
+Again, the only code running is a do-nothing loop to prevent returning to DOS immediately.
+
+---
+
 **2021 Atari Christmas Optimized For 32 Character Width...**
 
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021opt32.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
