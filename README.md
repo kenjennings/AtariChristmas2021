@@ -3,7 +3,11 @@
 
 https://logiker.com/Vintage-Computing-Christmas-Challenge-2021?fbclid=IwAR0qiysYCVLMEjuKfM3jJBGuRMUOgWTrwhW59gOEJmwtkl_B4mfJ7-PDw5Y
 
-Unfortunately, I missed the contest this year.  But, decided to roll up something unconventional for the entertainment value.
+Unfortunately, I missed the contest this year.  But, decided to roll up something unconventional for the entertainment value.  
+
+The methods presented here are fairly atypical as solutions go.  Yes, I realize the intent of the challenge is to compute the components to display the Tree -- how many blank spaces, and how many asterisks to use for the lines.  This is supposed to be about patterns and relationships between each line and for each triangular section on the tree.  However, the Atari can do some unusual things with the display.  
+
+Where a brute force method to output of all the data for the display presenting the tree is the least optimized method of display for most computers, on the Atari there are ways to optimize the direct output approach.
 
 These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
@@ -41,7 +45,7 @@ WORST CASE ASSEMBLY RESULTS:
 - (33 Bytes Display list)
 - EXECUTABLE CODE:     3 Bytes 
 
-The Original version contains some optimizations that are automatic, typical, trivial based on the way the Atari's ANTIC chip operates.  For example, re-using the same screen memory data for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.
+The Original version contains some optimizations that are automatic, typical, and  trivial based on the way the Atari's ANTIC chip operates.  For example, re-using the same screen memory data for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.  This is what would be expected on most non-Atari systems as the only way to directly generate the display without computation.
 
 The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memory Scan only needs to be setup once in the display list and then reading the subsequent data as screen memory is automatic.
 
@@ -66,8 +70,8 @@ FILE SIZE:         272 Bytes
 
 Since the point is to display the Christmas tree let's just service only enough data to make that possible.
  1) Make the Display List only produce what is necessary to display the lines of the tree.   There is no need to present any blank/empty text mode lines. 
- 2) The tree at its widest point is less than the 32 characters for the narrow width screen, so use narrow width.
- 3) Since each line begins and end with blank spaces then the blanks can overlap from line to line to produce the correct number of leading/trailing blanks from "shared" data.
+ 2) The tree at its widest point is less than the 32 characters for ANTIC's Narrow Width display, so use this feature to reduce the data needed for each line.
+ 3) Since each line begins and ends with blank spaces then the blanks can overlap from line to line to produce the correct number of leading/trailing blanks from "shared" data.
 
 This nearly cuts the original Assembly results in half.
 
