@@ -100,6 +100,21 @@ Yes, this does make the demo a little bigger, but it is still smaller than the o
 
 ---
 
-Will there be more versions of mad abuse?
+**2021 Atari Christmas Prettification With Computation...**
+
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021opt32pretty.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
+
+PRETTIFICATION COMPUTATION ASSEMBLY RESULTS:
+FILE SIZE:         181 Bytes
+- EXE FILE OVERHEAD:  38 Bytes
+- NON-DISPLAY DATA:   32 Bytes
+- DISPLAY DATA:       80 Bytes
+- (48 Bytes Display list)
+- (32 Bytes Character Set)
+- EXECUTABLE CODE:    31 Bytes 
+
+Do not populate screen memory at load time.  Instead, compute the values and write into screen memory.
+
+This version unpacks 22 bytes of run-length-encoded data to populate the 209 bytes of allocated screen memory which represent 448 apparent bytes of displayed data on screen.  The unpacking code is 28 bytes long.  (Plus the ubiquitous 3 bytes of do-nothing loop to prevent returning to DOS.)
 
 --- 
