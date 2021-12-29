@@ -53,6 +53,17 @@
 ;                               69 Bytes Display list
 ; EXECUTABLE CODE:     3 Bytes 
 ;
+;
+; WORST CASE ASSEMBLY RESULTS:
+; FILE SIZE:         1080 Bytes
+; EXE FILE OVERHEAD:   34 Bytes
+; NON-DISPLAY DATA:    10 Bytes
+; DISPLAY DATA:      1033 Bytes
+;                              1000 Bytes Screen memory
+;                                33 Bytes Display list
+; EXECUTABLE CODE:      3 Bytes 
+;
+;
 ; EASY OPTIMIZE 32 ASSEMBLY RESULTS:
 ; FILE SIZE:         272 Bytes
 ; EXE FILE OVERHEAD:  30 Bytes
@@ -61,6 +72,7 @@
 ;                              181 Bytes Screen memory
 ;                               48 Bytes Display list
 ; EXECUTABLE CODE:     3 Bytes 
+;
 ;
 ; PRETTIFICATION ASSEMBLY RESULTS:
 ; FILE SIZE:         340 Bytes
@@ -71,6 +83,7 @@
 ;                               48 Bytes Display list
 ;                               32 Bytes Character Set
 ; EXECUTABLE CODE:     3 Bytes 
+;
 ;*******************************************************************************
 
 ; O P T I M I Z E D    F O R    3 2   W I D T H    A N D    P R E T T I F I E D
@@ -146,23 +159,23 @@ DISPLAY_LIST                   ; Total 48 bytes
 
 CHARACTER_SET
 	; Model Asterisk for Mode 4
-	; 0 - XX .. .. XX
-	; 1 - XX .. .. XX
-	; 2 - .. XX XX ..
-	; 3 - XX XX XX XX
-	; 4 - .. XX XX ..
-	; 5 - XX .. .. XX
-	; 6 - XX .. .. XX
+	; 0 - XX .. XX ..
+	; 1 - XX .. XX ..
+	; 2 - .. XX .. ..
+	; 3 - XX XX XX ..
+	; 4 - .. XX .. ..
+	; 5 - XX .. XX ..
+	; 6 - XX .. XX ..
 	; 7 - .. .. .. ..
 
 	; Internal 0 == Space (insure this is 0/blank) 
 	.byte 0,0,0,0,0,0,0,0
 	; Internal 1 == ! - Green Tree
-	.byte 65,65,20,85,20,65,65,0
+	.byte 68,68,16,84,16,68,68,0
 	; Internal 2 == " - Yellow Star
-	.byte 130,130,40,170,40,130,130,0
+	.byte 136,136,32,168,32,136,136,0
 	; Internal 3 == # - Brown Trunk.
-	.byte 195,195,60,255,60,195,195,0
+	.byte 204,204,48,252,48,204,204,0
 
 ; ==========================================================================
 ; Setup OS shadow registers to present the display.

@@ -21,7 +21,9 @@
 ; While we're here... Setup the display to immitate the number
 ; of lines on the C64.
 ; 
-; ASSEMBLY RESULTS:
+;*******************************************************************************
+;
+; ORIGINAL ASSEMBLY RESULTS:
 ; FILE SIZE:         452 Bytes
 ; EXE FILE OVERHEAD:  30 Bytes
 ; NON-DISPLAY DATA:   10 Bytes
@@ -29,7 +31,40 @@
 ;                              340 Bytes Screen memory
 ;                               69 Bytes Display list
 ; EXECUTABLE CODE:     3 Bytes 
+;
+;
+; WORST CASE ASSEMBLY RESULTS:
+; FILE SIZE:         1080 Bytes
+; EXE FILE OVERHEAD:   34 Bytes
+; NON-DISPLAY DATA:    10 Bytes
+; DISPLAY DATA:      1033 Bytes
+;                              1000 Bytes Screen memory
+;                                33 Bytes Display list
+; EXECUTABLE CODE:      3 Bytes 
+;
+;
+; EASY OPTIMIZE 32 ASSEMBLY RESULTS:
+; FILE SIZE:         272 Bytes
+; EXE FILE OVERHEAD:  30 Bytes
+; NON-DISPLAY DATA:   10 Bytes
+; DISPLAY DATA:      229 Bytes
+;                              181 Bytes Screen memory
+;                               48 Bytes Display list
+; EXECUTABLE CODE:     3 Bytes 
+;
+;
+; PRETTIFICATION ASSEMBLY RESULTS:
+; FILE SIZE:         340 Bytes
+; EXE FILE OVERHEAD:  38 Bytes
+; NON-DISPLAY DATA:   10 Bytes
+; DISPLAY DATA:      289 Bytes
+;                              209 Bytes Screen memory
+;                               48 Bytes Display list
+;                               32 Bytes Character Set
+; EXECUTABLE CODE:     3 Bytes 
+;
 ;*******************************************************************************
+
 
 ; O R I G I N A L    V E R S I O N 
 
