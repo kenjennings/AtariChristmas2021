@@ -15,7 +15,7 @@ These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
 **VERSION SUMMARY**
 
-| **VERSION** | **FILE SIZE** | **CODE SIZE** |
+| **VERSION** | **FILE SIZE** | **6502 CODE SIZE** |
 | ------- | ------- | ------- |
 | WorstCase | 1080 bytes | 3 bytes |
 | Original  | 452 bytes | 3 bytes |
