@@ -9,12 +9,44 @@
 ; in the results and decided to work on an unconventional 
 ; solution.   2021-12-25
 ;
+;*******************************************************************************
+;
+; Original Version...
 ; This abuses Atari's structured file format to load all data for 
 ; display into memory, and update the necessary shadow registers.
 ; In the end, no actual code executes to create the display.
 ; The only code running is there to prevent returning to DOS 
 ; immediately.
 ;
+; While we're here... Create the Display List the same size as a C64 display.
+;
+;*******************************************************************************
+;
+; Worst Case Version.....
+; The Original Version included a few natural optimizations based on the way 
+; the Atari works.   For comparison purposes this is more of a worst-case
+; implementation i.e.  How it may need to work on other systems.  
+;
+; Re-using the same data for display as screen memory is a trivial and obvious 
+; "optimization" on the Atari.  On other systems this is usually not possible.
+; For this version of the demo all screen data is declared separately and 
+; contiguously.  However, supplying a full, contiguous display screen in memory
+; does provide for optimizing the Display List where only one Load Memory Scan
+; in the display list instead of using this on each line.  The resulting screen
+; looks identical to the Original Version.
+;
+; Because screen memeoru ids almost 1K, the Display List has to move to the 
+; next aligned page, so that it doesn't cross over the 1K boundary limit.  This
+; adds another segment to the load file, so the XEX file system overhead is 
+; different for this version than for the other versions.
+;
+; This abuses Atari's structured file format to load all data for display into 
+; memory, and update the necessary shadow registers.  In the end, no actual code
+; executes to create the display.  The only code running is there to prevent 
+; immediately returning to DOS.
+;
+; While we're here... Create the Display List the same size as a C64 display.
+; 
 ;*******************************************************************************
 ;
 ; Easy Optimization Version....
@@ -31,6 +63,52 @@
 ;
 ; This nearly cuts the original Assembly results in half.
 ; 
+;*******************************************************************************
+;
+; Prettification Version....
+; Don't the default colors (modeled from the C64) look ugly?  
+; Let's make this look more like a Christams tree. 
+; 1) Use ANTIC Mode 4 for color text.
+; 2) Use a (partial) redefined character set to provide the colored asterix   
+; for building the tree.
+; 
+; Yes, this is going to make the demo a little bigger. 
+; 
+;*******************************************************************************
+;
+; Prettification With Computation Version....
+; This does still abuse Atari's structured file format to load SOME 
+; data for display into memory, (Display List and Character set) and update 
+; the necessary shadow registers.
+;
+; This will attempt to compute and draw the tree on the screen.
+; 
+; However, this is not doing any clever math computation, but is 
+; running a simple kind of run lenth decoder to put data into the 
+; screen memory.
+;
+; This allocates space for the screen memory, but does not populate
+; it with data at build time.  Screen memory population  will occur 
+; via code at run time (like a "normal" program).
+;
+;*******************************************************************************
+;
+; V E R S I O N    S U M M A R Y 
+; 
+; +-----------+-----------+----------------+
+; | VERSION   | FILE SIZE | 6502 CODE SIZE |   
+; +-----------+-----------+----------------+
+; | WorstCase | 1080      | 3              |
+; +-----------+-----------+----------------+
+; | Original  | 452       | 3              |
+; +-----------+-----------+----------------+
+; | 32 Width  | 272       | 3              |
+; +-----------+-----------+----------------+
+; | Pretty    | 340       | 3              |
+; +-----------+-----------+----------------+
+; | Computed  | 181       | 31             |
+; +-----------+-----------+----------------+
+;
 ;*******************************************************************************
 ;
 ; ORIGINAL ASSEMBLY RESULTS:
@@ -73,7 +151,18 @@
 ;                               32 Bytes Character Set
 ; EXECUTABLE CODE:     3 Bytes 
 ;
+;
+; PRETTIFICATION COMPUTATION ASSEMBLY RESULTS:
+; FILE SIZE:         181 Bytes
+; EXE FILE OVERHEAD:  38 Bytes
+; NON-DISPLAY DATA:   32 Bytes
+; DISPLAY DATA:       80 Bytes
+;                               48 Bytes Display list
+;                               32 Bytes Character Set
+; EXECUTABLE CODE:    31 Bytes 
+;
 ;*******************************************************************************
+
 
 ; O P T I M I Z E D    F O R    3 2   C H A R A C T E R    S C R E E N    W I D T H 
 

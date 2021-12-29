@@ -11,6 +11,17 @@
 ;
 ;*******************************************************************************
 ;
+; Original Version...
+; This abuses Atari's structured file format to load all data for 
+; display into memory, and update the necessary shadow registers.
+; In the end, no actual code executes to create the display.
+; The only code running is there to prevent returning to DOS 
+; immediately.
+;
+; While we're here... Create the Display List the same size as a C64 display.
+;
+;*******************************************************************************
+;
 ; Worst Case Version.....
 ; The Original Version included a few natural optimizations based on the way 
 ; the Atari works.   For comparison purposes this is more of a worst-case
@@ -36,6 +47,68 @@
 ;
 ; While we're here... Create the Display List the same size as a C64 display.
 ; 
+;*******************************************************************************
+;
+; Easy Optimization Version....
+; Since the point is to display the Christmas tree let's just 
+; service only enough data to make that possible.
+; 1) Make the Display List only produce what is necessary to 
+; display the lines of the tree.   There is no need to present 
+; any blank/empty text mode lines. 
+; 2) The tree at it's widest point is less than the 32 characters
+; for the narrow width screen, so use narrow width.
+; 3) Since each line begins and end with blank spaces then 
+; the blanks can overlap from line to line to produce the correct
+; number of leading/trailing blanks from "shared" data.
+;
+; This nearly cuts the original Assembly results in half.
+; 
+;*******************************************************************************
+;
+; Prettification Version....
+; Don't the default colors (modeled from the C64) look ugly?  
+; Let's make this look more like a Christams tree. 
+; 1) Use ANTIC Mode 4 for color text.
+; 2) Use a (partial) redefined character set to provide the colored asterix   
+; for building the tree.
+; 
+; Yes, this is going to make the demo a little bigger. 
+; 
+;*******************************************************************************
+;
+; Prettification With Computation Version....
+; This does still abuse Atari's structured file format to load SOME 
+; data for display into memory, (Display List and Character set) and update 
+; the necessary shadow registers.
+;
+; This will attempt to compute and draw the tree on the screen.
+; 
+; However, this is not doing any clever math computation, but is 
+; running a simple kind of run lenth decoder to put data into the 
+; screen memory.
+;
+; This allocates space for the screen memory, but does not populate
+; it with data at build time.  Screen memory population  will occur 
+; via code at run time (like a "normal" program).
+;
+;*******************************************************************************
+;
+; V E R S I O N    S U M M A R Y 
+; 
+; +-----------+-----------+----------------+
+; | VERSION   | FILE SIZE | 6502 CODE SIZE |   
+; +-----------+-----------+----------------+
+; | WorstCase | 1080      | 3              |
+; +-----------+-----------+----------------+
+; | Original  | 452       | 3              |
+; +-----------+-----------+----------------+
+; | 32 Width  | 272       | 3              |
+; +-----------+-----------+----------------+
+; | Pretty    | 340       | 3              |
+; +-----------+-----------+----------------+
+; | Computed  | 181       | 31             |
+; +-----------+-----------+----------------+
+;
 ;*******************************************************************************
 ;
 ; ORIGINAL ASSEMBLY RESULTS:
@@ -77,6 +150,16 @@
 ;                               48 Bytes Display list
 ;                               32 Bytes Character Set
 ; EXECUTABLE CODE:     3 Bytes 
+;
+;
+; PRETTIFICATION COMPUTATION ASSEMBLY RESULTS:
+; FILE SIZE:         181 Bytes
+; EXE FILE OVERHEAD:  38 Bytes
+; NON-DISPLAY DATA:   32 Bytes
+; DISPLAY DATA:       80 Bytes
+;                               48 Bytes Display list
+;                               32 Bytes Character Set
+; EXECUTABLE CODE:    31 Bytes 
 ;
 ;*******************************************************************************
 
