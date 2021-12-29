@@ -37,7 +37,7 @@ While we're here... Setup the display to immitate the number of lines on the C64
 [![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
 
 WORST CASE ASSEMBLY RESULTS:
-- FILE SIZE:         1080 Bytes
+FILE SIZE:         1080 Bytes
 - EXE FILE OVERHEAD:   34 Bytes
 - NON-DISPLAY DATA:    10 Bytes
 - DISPLAY DATA:      1033 Bytes
