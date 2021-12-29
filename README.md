@@ -41,9 +41,9 @@ WORST CASE ASSEMBLY RESULTS:
 - (33 Bytes Display list)
 - EXECUTABLE CODE:     3 Bytes 
 
-The Original version contains some optimizations that are automatic, typical, trivial based on the way the Atari's ANTIC chip operates.  For example, sharing the same data as screen memeory for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.
+The Original version contains some optimizations that are automatic, typical, trivial based on the way the Atari's ANTIC chip operates.  For example, re-using the same screen memory data for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.
 
-The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memeory Scan only needs to be setup once in the display list and then reading the subsequent data as screen memory is automatic.
+The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memory Scan only needs to be setup once in the display list and then reading the subsequent data as screen memory is automatic.
 
 Because the screen data is nearly 1K, the display list following the screen would run over the 1K boundary limit for Display Lists.  Unlike the other versions of the demo using much less data for screen display, this version must move the  Display List to an aligned location that will prevent it from crossing over the 1K boundary.  This introduces an extra segment and more XEX file overhead not present in the other versions.
 
