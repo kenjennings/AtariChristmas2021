@@ -5,9 +5,9 @@ https://logiker.com/Vintage-Computing-Christmas-Challenge-2021?fbclid=IwAR0qiysY
 
 Unfortunately, I missed the contest this year.  But, decided to roll up something unconventional for the entertainment value.  
 
-The methods presented here are fairly atypical as solutions go.  Yes, I realize the intent of the challenge is to compute the components to display the Tree -- how many blank spaces, and how many asterisks to use for the lines.  This is supposed to be about patterns and relationships between each line and for each triangular section on the tree.  However, the Atari can do some unusual things with the display.  
+The methods presented here are fairly atypical as solutions go.  Yes, I realize the intent of the challenge is to compute the components to display the Tree -- how many blank spaces, and how many asterisks to use for the lines.  This is supposed to be about patterns and relationships between each line and for each triangular section on the tree.  
 
-Where a brute force method to output of all the data for the display presenting the tree is the least optimized method of display for most computers, on the Atari there are ways to optimize the direct output approach.
+However, the Atari can do some unusual things with the display.  Where a brute force method to output of all the data for the tree is the least optimized method of display for most computers, on the Atari there are ways to optimize the direct output approach.
 
 These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
@@ -57,11 +57,11 @@ FILE SIZE:         1080 Bytes
 - (33 Bytes Display list)
 - EXECUTABLE CODE:     3 Bytes 
 
-The Original version contains some optimizations that are automatic, typical, and  trivial based on the way the Atari's ANTIC chip operates.  For example, re-using the same screen memory data for multiple line on the screen.  This Worst Case Veersion produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.  This is what would be expected on most non-Atari systems as the only way to directly generate the display without computation.
+The Original version contains some optimizations that are automatic, typical, and  trivial based on the way the Atari's ANTIC chip operates.  For example, re-using the same screen memory data for multiple lines on the screen.  This Worst Case Version produces a display identical to the Original version, but avoids these kinds of  Atari-specific environment optimizations.  This result is what would be expected on most non-Atari systems as the only way to directly generate the display without computation.
 
-The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memory Scan only needs to be setup once in the display list and then reading the subsequent data as screen memory is automatic.
+The program declares contiguous data for the entire display.  Since screen data is contiguous the Display List is more simple, because the Load Memory Scan only needs to be set up once in the display list and then automatically reads the subsequent data as screen memory for the following lines.
 
-Because the screen data is nearly 1K, the display list following the screen would run over the 1K boundary limit for Display Lists.  Unlike the other versions of the demo using much less data for screen display, this version must move the  Display List to an aligned location that will prevent it from crossing over the 1K boundary.  This introduces an extra segment and more XEX file overhead not present in the other versions.
+Because the screen data is nearly 1K, the display list following the screen would run over the 1K boundary limit for Display Lists.  Unlike the other versions of the demo using much less data for screen display, this version must move the  Display List to a location that will prevent it from crossing over the 1K boundary.  This introduces an extra segment and more XEX file overhead not present in the other versions.
 
 Again, the only code running is a do-nothing loop to prevent returning to DOS immediately.
 
@@ -127,6 +127,6 @@ FILE SIZE:         181 Bytes
 
 Do not populate screen memory at load time.  Instead, compute the values and write into screen memory.
 
-This version unpacks 22 bytes of run-length-encoded data to populate the 209 bytes of allocated screen memory which represent 448 apparent bytes of displayed data on screen.  The unpacking code is 28 bytes long.  (Plus the ubiquitous 3 bytes of do-nothing loop to prevent returning to DOS.)
+No, this is not a clever analysis of the relationship of the number of asterisks in each line and in each section.   This version unpacks 22 bytes of run-length-encoded data to populate the 209 bytes of allocated screen memory which represent 448 apparent bytes of displayed data on screen.  The unpacking code is 28 bytes long.  (Plus the ubiquitous 3 bytes of do-nothing loop to prevent returning to DOS.)
 
 --- 
