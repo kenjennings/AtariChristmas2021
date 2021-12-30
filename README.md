@@ -22,6 +22,7 @@ These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 | 32 Width  | 272 bytes | 3 bytes |
 | Pretty    | 340 bytes | 3 bytes |
 | Computed  | 181 bytes | 31 bytes |
+| Ugly code | 96 bytes | 65 bytes |
 
 ---
 
@@ -128,5 +129,23 @@ FILE SIZE:         181 Bytes
 Do not populate screen memory at load time.  Instead, compute the values and write into screen memory.
 
 No, this is not a clever analysis of the relationship of the number of asterisks in each line and in each section.   This version unpacks 22 bytes of run-length-encoded data to populate the 209 bytes of allocated screen memory which represent 448 apparent bytes of displayed data on screen.  The unpacking code is 28 bytes long.  (Plus the ubiquitous 3 bytes of do-nothing loop to prevent returning to DOS.)
+
+--- 
+
+**2021 Atari Christmas Ugly Code...**
+
+[![DEMO](https://raw.githubusercontent.com/kenjennings/AtariChristmas2021/master/AtariChristmas2021uglycode.png)](https://github.com/kenjennings/AtariChristmas2021/blob/main/README.md "Demo") 
+
+UGLY CODING ASSEMBLY RESULTS:
+ FILE SIZE:          96 Bytes
+- EXE FILE OVERHEAD:  10 Bytes
+- DATA:               21 Bytes
+- EXECUTABLE CODE:    65 Bytes 
+
+No graphics mode creation or setup at all.   Just use the default display provided by the screen editor E: device.
+
+The code simply reads from a table listing the number of asterisks needed for each line.  It outputs the correct number of spaces and asterisks to the E: device to center the asterisks and fill the line.
+
+Logic is based on the default 38 character/line width for the screen editor.
 
 --- 
