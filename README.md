@@ -3,11 +3,11 @@
 
 https://logiker.com/Vintage-Computing-Christmas-Challenge-2021?fbclid=IwAR0qiysYCVLMEjuKfM3jJBGuRMUOgWTrwhW59gOEJmwtkl_B4mfJ7-PDw5Y
 
-Unfortunately, I missed the contest this year.  But, decided to roll up something unconventional for the entertainment value.  
+Unfortunately, I missed the contest this year.  But, decided to roll up something **unconventional** for the entertainment value.  
 
 The methods presented here are fairly atypical as solutions go.  Yes, I realize the intent of the challenge is to compute the components to display the Tree -- how many blank spaces, and how many asterisks to use for the lines.  This is supposed to be about patterns and relationships between each line and for each triangular section on the tree.  
 
-However, the Atari can do some unusual things with the display.  Where a brute force method to output of all the data for the tree is the least optimized method of display for most computers, on the Atari there are ways to optimize the direct output approach.
+However, the Atari can do some unusual things with the display.   Directly printing the data for the tree is the least optimized method of display for most computers.  But, on the Atari the hardware allows wats to optimize the direct output approach.
 
 These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
@@ -39,7 +39,7 @@ FILE SIZE:         452 Bytes
 - (69 Bytes Display List)
 - EXECUTABLE CODE:     3 Bytes 
 
-Abuse Atari's structured file format to load all data for display directly into memory and update the necessary shadow registers.  In the end, no actual code executes to create the display. The only code running is a do-nothing loop to prevent returning to DOS immediately.
+This is the first version I threw together.   Here I abuse Atari's structured file format to load all data for display directly into memory and update the necessary shadow registers.  In the end, no actual code executes to create the display. The only code running is a do-nothing loop to prevent returning to DOS immediately.
 
 While we're here... Setup the display to immitate the number of lines on the C64.
 
@@ -109,7 +109,7 @@ Those default colors (modeled from the C64) are ugly, right?   So, let's make th
 2) Use colors more like a Christmas Tree
 3) Use a (partial) redefined character set to provide the new colored asterix for building the tree.
 
-Yes, this does make the demo a little bigger, but it is still smaller than the original demo by over 100 bytes.
+Yes, this does make the demo a little bigger, but it is still smaller than the original demo by over 100 bytes.  (Amazing considering it had to add 32 bytes for the character set.)
 
 ---
 
@@ -126,7 +126,7 @@ FILE SIZE:         181 Bytes
 - (32 Bytes Character Set)
 - EXECUTABLE CODE:    31 Bytes 
 
-Do not populate screen memory at load time.  Instead, compute the values and write into screen memory.
+In this version, rather than populating the screen memory at load time, instead compute the values and write into screen memory.
 
 No, this is not a clever analysis of the relationship of the number of asterisks in each line and in each section.   This version unpacks 22 bytes of run-length-encoded data to populate the 209 bytes of allocated screen memory which represent 448 apparent bytes of displayed data on screen.  The unpacking code is 28 bytes long.  (Plus the ubiquitous 3 bytes of do-nothing loop to prevent returning to DOS.)
 
