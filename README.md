@@ -7,7 +7,7 @@ Unfortunately, I missed the contest this year.  But, decided to roll up somethin
 
 The methods presented here are fairly atypical as solutions go.  Yes, I realize the intent of the challenge is to compute the components to display the Tree -- how many blank spaces, and how many asterisks to use for the lines.  This is supposed to be about patterns and relationships between each line and for each triangular section on the tree.  
 
-However, the Atari can do some unusual things with the display.   Directly printing the data for the tree is the least optimized method of display for most computers.  But, on the Atari the hardware allows wats to optimize the direct output approach.
+However, the Atari can do some unusual things with the display.   Directly printing the data for the tree is the least optimized method of display for most computers.  But, on the Atari the hardware allows ways to optimize the direct output approach.
 
 These demos are built with MADS assembler from eclipse+WUDSN by Ken Jennings
 
