@@ -93,6 +93,16 @@
 ;
 ;*******************************************************************************
 ;
+; Ugly coding version....
+; No graphics mode creation or setup.   Just use the default display 
+; provided by the E: device.
+; The code simply reads from a table listing the number of asterisks needed 
+; for each line.  It outputs the correct number of spaces and asterisks
+; to the screen editor device to center the asterisks and fill the line.
+; Logic is based on the default 38 character/line width for the screen editor.
+; 
+;*******************************************************************************
+;
 ; V E R S I O N    S U M M A R Y 
 ; 
 ; +-----------+-----------+----------------+
@@ -107,6 +117,8 @@
 ; | Pretty    | 340       | 3              |
 ; +-----------+-----------+----------------+
 ; | Computed  | 181       | 31             |
+; +-----------+-----------+----------------+
+; | Ugly      | 96        | 65             |
 ; +-----------+-----------+----------------+
 ;
 ;*******************************************************************************
@@ -161,9 +173,14 @@
 ;                               32 Bytes Character Set
 ; EXECUTABLE CODE:    31 Bytes 
 ;
+;
+; UGLY CODING ASSEMBLY RESULTS:
+; FILE SIZE:          96 Bytes
+; EXE FILE OVERHEAD:  10 Bytes
+; DATA:               21 Bytes
+; EXECUTABLE CODE:    65 Bytes 
+;
 ;*******************************************************************************
-
-
 
 ; O R I G I N A L    V E R S I O N 
 

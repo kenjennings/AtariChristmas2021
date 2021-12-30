@@ -182,13 +182,12 @@
 ;
 ;*******************************************************************************
 
-; W O R S T    C A S E    V E R S I O N 
+; U G L Y    C O D I N G
 
 ; ==========================================================================
 ; Atari System Includes (MADS assembler versions)
 ; https://github.com/kenjennings/Atari-Mads-Includes
 	icl "ANTIC.asm"  ; Display List registers
-	icl "GTIA.asm"   ; Color Registers.
 	icl "OS.asm"     ; Interrupt definitions.
 	icl "DOS.asm"    ; LOMEM, load file start, and run addresses.
 
@@ -196,116 +195,132 @@
 
 
 ; ==========================================================================
-; Stop the display.   Hopefully the other data loading goes on long enough 
-; that this does not risk the rare condition of partially updating the 
-; display list pointer while ANTIC is still running a display.  While this
-; is very improbable my OCD programming say we must still take care 
-; of DMACTL.
+; The Program
 
-	ORG SDMCTL
-	.byte 0               ; POKE DMACTL,0 ; Turn off display.
+	ORG $80                 ; Run from Page 0 for shorter instructions.
+
+ASTERISKS    .byte 0              ; Save number of asterisks from the table.
+SPACES       .byte 0              ; Save number of leading, then trailing spaces needed.
+
+OUTPUT_CHAR  .byte $20            ; Save while writing, because PutCH destroys A.
+COUNT_CHARS  .byte 0              ; Cannot use X.  Count characters here.
 
 
-; ==========================================================================
-; Display Data and Display List.
+THE_PROGRAM
 
-	ORG $4000               ; Arbitrary
+Loop_ProcessPackedData
+INK_ADDR = *+1                    ; Low byte pointing into data table.	
+	lda PACKED_DATA               ; Get a byte from the table
+	bmi Do_While_More_Electricity ; The end at byte $FF
 
-; 25 lines * 40 bytes each for the display.  Since this is being addressed 
-; simply as one contiguous block, there is no need to label every line.
+	sta ASTERISKS                 ; Save count of asterisks.
+	lda #39                       ; 39, not 38, because need tweak for the total width (Default screen width of E: is 38 chars)
+	sec
+	sbc ASTERISKS                 ; 33 - number of asterisks == the number of spaces.
+	lsr                           ; divide number of spaces by 2
+	sta SPACES                    ; Keep the count of spaces needed
 
-SCREEN_MEMORY
-	.sb "                                        " ; Line 1
-	.sb "                                        " ; Line 2
-	.sb "                                        " ; Line 3
-	.sb "                                        " ; Line 4
-	.sb "                                        " ; Line 5
-	.sb "                                        " ; Line 6
-	.sb "                                        " ; Line 7
-	.sb "                    *                   " ; Line 8
-	.sb "                   ***                  " ; Line 9
-	.sb "                  *****                 " ; Line 10
-	.sb "                 *******                " ; Line 11
-	.sb "                   ***                  " ; Line 12
-	.sb "                 *******                " ; Line 13
-	.sb "               ***********              " ; Line 14
-	.sb "             ***************            " ; Line 15
-	.sb "                  *****                 " ; Line 16
-	.sb "               ***********              " ; Line 17
-	.sb "            *****************           " ; Line 18
-	.sb "         ***********************        " ; Line 19
-	.sb "                   ***                  " ; Line 20
-	.sb "                   ***                  " ; Line 21
-	.sb "                                        " ; Line 22
-	.sb "                                        " ; Line 23
-	.sb "                                        " ; Line 24
-	.sb "                                        " ; Line 25
+	jsr EarlyEntry_ForSpaces      ; Output the leading spaces.
 
-; Since Display memeory is almost 1K, this means the code is very near a
-; 1K boundary which the display list cannot cross over.
-; Therefore, realign to the next page boundary, so the Display List
-; has enough memeory available.
+	lda ASTERISKS                 ; Use the  count of asterisks.
+	sta COUNT_CHARS
+	lda #$2a                      ; ATASCII asterisk.
+	jsr PrintChars           ; Output the asterisks
 
-	.align $0400
+	dec SPACES                    ; Decrement trailing spaces -- this is needed to center the odd number of asterisks.
+	jsr EarlyEntry_ForSpaces      ; Output the trailing spaces.
 	
-DISPLAY_LIST
-	mDL_BLANK DL_BLANK_8
-	mDL_BLANK DL_BLANK_8
-	mDL_BLANK DL_BLANK_4             ; That was 20 blank lines to take care of overscan at the top of the screen.
-	mDL_LMS DL_TEXT_2,SCREEN_MEMORY  ; Line 1 - LMS only here as screen memory is contiguous
-	mDL     DL_TEXT_2                ; Line 2
-	mDL     DL_TEXT_2                ; Line 3
-	mDL     DL_TEXT_2                ; Line 4
-	mDL     DL_TEXT_2                ; Line 5
-	mDL     DL_TEXT_2                ; Line 6
-	mDL     DL_TEXT_2                ; Line 7
-	mDL     DL_TEXT_2                ; Line 8
-	mDL     DL_TEXT_2                ; Line 9
-	mDL     DL_TEXT_2                ; Line 10
-	mDL     DL_TEXT_2                ; Line 11
-	mDL     DL_TEXT_2                ; Line 12
-	mDL     DL_TEXT_2                ; Line 13
-	mDL     DL_TEXT_2                ; Line 14
-	mDL     DL_TEXT_2                ; Line 15
-	mDL     DL_TEXT_2                ; Line 16
-	mDL     DL_TEXT_2                ; Line 17
-	mDL     DL_TEXT_2                ; Line 18
-	mDL     DL_TEXT_2                ; Line 19
-	mDL     DL_TEXT_2                ; Line 20
-	mDL     DL_TEXT_2                ; Line 21
-	mDL     DL_TEXT_2                ; Line 22
-	mDL     DL_TEXT_2                ; Line 23
-	mDL     DL_TEXT_2                ; Line 24
-	mDL     DL_TEXT_2                ; Line 25  Huh.  The Atari can display 200 scan lines.  How about that?
-	mDL_JVB DISPLAY_LIST
+	inc INK_ADDR                  ; Next pointer to the data table.
+	bne Loop_ProcessPackedData    ; Always True
 
-; ==========================================================================
-; Setup OS shadow registers to present the display.
 
-	ORG COLOR1
-	.byte $0c,$76,$00,$8C ; POKE colors 709, 710, (711), 712
+;---------------------------------------------------------------------
+; Optimization to eliminate some redundant code, because 
+; generating blank spaces occurs twice on each line.
 
-	ORG SDLSTL 
-	.word DISPLAY_LIST    ; DPOKE SDLSTL, DISPLAY_LIST
+EarlyEntry_ForSpaces
+	lda SPACES                    ; Use the adjusted count of spaces.
+	sta COUNT_CHARS
+	lda #$20                      ; ATASCII space.
 
-	ORG SDMCTL
-	.byte ENABLE_DL_DMA|PLAYFIELD_WIDTH_NORMAL  ; POKE SDMCTL, Display On, Normal Width
 
+;---------------------------------------------------------------------
+; Write characters to the screen.
+; A == character to print.
+
+PrintChars
+	sta OUTPUT_CHAR
 	
-; ==========================================================================
-; The "Program"
+Loop_PrintChars
+	jsr PutCH                     ; Write to Screen.
+	dec COUNT_CHARS               ; Subtract character count
+	bne Loop_PrintChars     ; If it did not roll over from 0 to $FF then loop again.
 
-	ORG LOMEM_DOS           ; First usable memory after DOS (2.0s)
-;	ORG LOMEM_DOS_DUP       ; Use this if LOMEM_DOS won't work.  or just use $5000 or $6000
+	rts
+
+
+;---------------------------------------------------------------------
+; The General Purpose CIO on the Atari doesn't really have a 
+; published entry point to output a byte to the screen.   This is 
+; supposed to be done by a CIO command.   However, the OS does supply 
+; a shortcut to BASIC to output a single character to the device 
+; using that control block.  The function copies that address  from 
+; the IOCB device 0  (The E: eeditor device) to the stack, and then 
+; calls it by rts. 
+; 
+; INPUT:
+; A = character to write
+; NOTE:
+; OS will modify all registers.
+;---------------------------------------------------------------------
+
+PutCH
+	lda ICPTH ; High byte for Put Char in E:/IOCB Channel 0.
+	pha       ; Push to stack
+	lda ICPTL ; Low byte for Put Char in E:/IOCB Channel 0.
+	pha       ; Push to stack
+
+	lda OUTPUT_CHAR
+
+	; This rts actually triggers calling the address of PutCH
+	; that was pushed onto the stack above. 
+	rts  
+
+
+;---------------------------------------------------------------------
+; Park here when done.  
 
 Do_While_More_Electricity
 
 	jmp Do_While_More_Electricity ; Forever
 
 
+; The Data for the screen.
+; This is just the count of asterisks that occur on each line.
+; The code calculates leading/trailing spaces needed for each line.
+; If byte to unpack is negative, then the loop is over.
+
+PACKED_DATA         ; 15 bytes
+	.by $01 ; "                *               "
+	.by $03 ; "               ***              "
+	.by $05 ; "              *****             "
+	.by $07 ; "             *******            "
+	.by $03 ; "               ***              "
+	.by $07 ; "             *******            "
+	.by $0b ; "           ***********          "
+	.by $0f ; "         ***************        "
+	.by $05 ; "              *****             "
+	.by $0b ; "           ***********          "
+	.by $11 ; "        *****************       " 
+	.by $17 ; "     ***********************    "
+	.by $03 ; "               ***              "
+	.by $03 ; "               ***              "
+	.by $FF ; The End
+
+
 ; ==========================================================================
 ; Inform DOS of the program's Auto-Run address...
 
-	mDiskDPoke DOS_RUN_ADDR,Do_While_More_Electricity  
+	mDiskDPoke DOS_RUN_ADDR,THE_PROGRAM  
  
 	END
